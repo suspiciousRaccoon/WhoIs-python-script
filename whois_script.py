@@ -1,6 +1,7 @@
 from pathlib import Path
 import argparse
 import whois
+import time
 
 
 def parse_args():
@@ -37,7 +38,10 @@ def check_domain_registration(domain):
         w = whois.whois(domain)
         return bool(w.domain_name)
     except whois.parser.PywhoisError as e:
-        # print(f'Error checking domain {domain}: {}')
+        # print(f'Error checking domain {domain}: {e}')
+        return False
+    except Exception as e:
+        # print(f'Error checking domain {domain}: {e}')
         return False
 
 
@@ -67,6 +71,7 @@ def get_domains(input_file, output_registered, output_not_registered):
             else:
                 not_registered.write(domain + '\n')
                 # print(f'Not registered: {domain}')
+            time.sleep(1)
 
 
 if __name__ == "__main__":
